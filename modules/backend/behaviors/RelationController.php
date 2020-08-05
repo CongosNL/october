@@ -1113,7 +1113,7 @@ class RelationController extends ControllerBehavior
             $this->relationObject->add($newModel, $sessionKey);
         }
         elseif ($this->viewMode == 'single') {
-            $newModel = $this->manageWidget->model;
+            $newModel = $this->viewModel;
             $this->viewWidget->setFormValues($saveData);
 
             /*
@@ -1157,8 +1157,6 @@ class RelationController extends ControllerBehavior
             }
         }
         elseif ($this->viewMode == 'single') {
-            $this->viewModel = $this->manageWidget->model;
-
             $this->viewWidget->setFormValues($saveData);
             $this->viewModel->save(null, $this->manageWidget->getSessionKey());
         }
@@ -1369,7 +1367,7 @@ class RelationController extends ControllerBehavior
         $this->beforeAjax();
 
         $foreignKeyName = $this->relationModel->getQualifiedKeyName();
-        $hydratedModel = $this->pivotWidget->model;
+        $hydratedModel = $this->relationObject->where($foreignKeyName, $this->manageId)->first();
         $saveData = $this->pivotWidget->getSaveData();
 
         $modelsToSave = $this->prepareModelsToSave($hydratedModel, $saveData);
